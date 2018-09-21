@@ -6,14 +6,14 @@
 // All it does is render <div>Hello Vue</div> at the bottom of the page.
 
 import Vue from 'vue'
-import Game from '../game.vue'
+import Viewport from '../viewport.vue'
 import store from '../store'
 
 document.addEventListener('DOMContentLoaded', () => {
   new Vue({
     store,
-    el: document.getElementById('game'),
-    render: h => h(Game)
+    el: document.getElementById('viewport'),
+    render: h => h(Viewport)
   })
 })
 
@@ -39,10 +39,6 @@ App.cable.subscriptions.create("EventsChannel", {
 
   getInitialState: function() {
     return this.perform('get_initial_state');
-  },
-
-  dorp: function() {
-    return this.perform('dorp');
   }
 });
 
