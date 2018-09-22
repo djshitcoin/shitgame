@@ -10,7 +10,7 @@ import Viewport from '../viewport.vue'
 import store from '../store'
 
 document.addEventListener('DOMContentLoaded', () => {
-  new Vue({
+  const viewport = new Vue({
     store,
     el: document.getElementById('viewport'),
     render: h => h(Viewport)
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 App.cable.subscriptions.create("EventsChannel", {
   connected: function() {
-    this.getInitialState()
+    this.perform('get_initial_state');
   },
 
   disconnected: function() {
@@ -27,19 +27,10 @@ App.cable.subscriptions.create("EventsChannel", {
   },
 
   received: function(data) {
-    let action = data[0]
-    let payload = data[1]
-    if (action == 'INITIAL_STATE') {
-      store.replaceState(payload)
-    }
-    else {
-      store.commit(data[0], data[1])
-    }
+    store.commit(data[0], data[1])
   },
 
-  getInitialState: function() {
-    return this.perform('get_initial_state');
-  }
+  
 });
 
 

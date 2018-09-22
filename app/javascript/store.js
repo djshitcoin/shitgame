@@ -3,11 +3,19 @@ import Puex from 'puex'
 
 Vue.use(Puex)
 
+const allEntities = []
+
 export default new Puex({
-  state: {},
+  state: {
+    hodler: null
+  },
   mutations: {
-    ENTITY_UPDATED(state, payload) {
-      console.log("woot")
+    UPDATE_ENTITY(state, payload) {
+      const entity = Object.create(Entity)
+      Object.assign(entity, payload)
+      state.hodler = entity
+      
+      window.hodler = state.hodler
     }
   },
   

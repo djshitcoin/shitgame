@@ -8,20 +8,19 @@ class EventsChannel < ApplicationCable::Channel
     # Any cleanup needed when channel is unsubscribed
   end
   
-  def dispatch action, payload
+  def dispatch action, payload = nil
     self.class.broadcast_to current_user, [action, payload]
   end
 
   def get_initial_state
-    dispatch :INITIAL_STATE, {
-      hodler: {
-        last_hp: 30,
-        last_hp_updated_at: Time.now,
-        exp: 410
+    dispatch :UPDATE_ENTITY, {
+      id: 1,
+      cached: {
+        hp: 10,
+        hp_updated_at: Time.now.to_i,
+        last_combat_at: Time.now.to_i,
+        constitution: 10
       }
     }
-  end
-
-  def dorp
   end
 end
