@@ -17,20 +17,20 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 })
 
-App.cable.subscriptions.create("EventsChannel", {
+// Create one channel for events only for me.
+App.events = App.cable.subscriptions.create({channel: "EventsChannel", subject: 'me'}, {
   connected: function() {
-    this.perform('get_initial_state');
+    this.perform('retrieve_all_entities')
   },
-
-  disconnected: function() {
-    // Called when the subscription has been terminated by the server
-  },
-
   received: function(data) {
     store.commit(data[0], data[1])
-  },
-
-  
+  }
+});
+// Create one channel for events visible to all
+App.cable.subscriptions.create({channel: "EventsChannel", subject: 'entities'}, {
+  received: function(data) {
+    store.commit(data[0], data[1])
+  }
 });
 
 

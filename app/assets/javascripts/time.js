@@ -1,6 +1,6 @@
 // Simulate Rails' Time class
 window.Time = {
-  get now() {
+  get unix() {
     // TODO: use server time
     return new Date().getTime() / 1000
   }

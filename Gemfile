@@ -19,6 +19,8 @@ gem 'jbuilder', '~> 2.5'
 gem 'ruby2js', require: 'ruby2js/rails'
 gem 'foreman'
 
+gem 'redis'
+
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 

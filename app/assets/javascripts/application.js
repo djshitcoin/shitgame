@@ -12,5 +12,5 @@
 //
 //# require rails-ujs
 //# require activestorage
-//= require entity
+//= require entity_proto
 //= require_tree .

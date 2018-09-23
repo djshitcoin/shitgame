@@ -17,7 +17,7 @@ module Ruby2JS
       engine_name "ruby2js"
 
       config.assets.configure do |env|
-        env.register_engine '.rb', SprocketProcessor, mime_type: 'text/javascript', silence_deprecation: true
+        env.register_engine '.rb', SprocketProcessor, silence_deprecation: true
       end
 
     end

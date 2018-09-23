@@ -1,26 +1,38 @@
+# require Rails.root.join 'app/models/entity.rb'
+
 class EventsChannel < ApplicationCable::Channel
-  
   def subscribed
-    stream_for current_user
+    if params[:subject] == "me"
+      stream_for current_user
+    else
+      stream_from 'entities'
+    end
   end
   
   def unsubscribed
     # Any cleanup needed when channel is unsubscribed
   end
   
-  def dispatch action, payload = nil
-    self.class.broadcast_to current_user, [action, payload]
+  def attack params
+    attacker = Entity.find(params['attacker_id'])
+    return unless attacker.controlled_by_id == current_user.id
+    
+    target = Entity.find(params['target_id'])
+    return if attacker.friendly?(target)
+    
+    attacker.attack!(target)
   end
 
-  def get_initial_state
-    dispatch :UPDATE_ENTITY, {
-      id: 1,
-      cached: {
-        hp: 10,
-        hp_updated_at: Time.now.to_i,
-        last_combat_at: Time.now.to_i,
-        constitution: 10
-      }
-    }
+  def spawn params
+    hodler = current_user.hodlers.find(params["hodler_id"])
+    entity = hodler.entity!
+    self.class.broadcast_to current_user, [:SET_CONTROLLING_ENTITY, entity.id]
+    # self.class.broadcast_to current_user, [:UPDATE_ENTITY, entity.as_json]
+  end
+
+  def retrieve_all_entities
+    for entity in Entity.all
+      self.class.broadcast_to current_user, [:UPDATE_ENTITY, entity.as_json]
+    end
   end
 end
