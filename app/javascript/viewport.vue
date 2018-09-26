@@ -19,13 +19,9 @@
         </div>
       </div>
     </div>
-    <div v-else>
-      You are not controlling any entity.
-      <button @click="spawn">Play Hodler 1</button>
-    </div>
     <div class="world">
       <h1>Shitcoin Kingdom</h1>
-      <p>Fudsters in front of the castle:</p>
+      <p>Oh no! These Fudsters are attacking the castle!</p>
       <div class="entity" v-if="id != $store.state.controlledEntityId" v-for="(entity, id) in $store.state.allEntities" :key="id">
         <div class="name">{{ entity.name }}</div>
         <div class="level">Level {{ entity.level() }}</div>
@@ -51,7 +47,7 @@ export default {
     requestAnimationFrame(update)
   },
   methods: {
-    ...mapActions(['attack', 'spawn'])
+    ...mapActions(['attack'])
   }
 }
 </script>
@@ -73,6 +69,9 @@ export default {
     width: 100%;
     font-weight: bold;
   }
+}
+.entity {
+  margin: 12px;
 }
 .exp_bar {
   position: relative;

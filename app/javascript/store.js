@@ -2,11 +2,11 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 Vue.use(Vuex)
-
+window.allEntities = {}
 export default new Vuex.Store({
   state: {
-    controlledEntityId: null,
-    allEntities: {}
+    controlledEntityId: window.played_entity_id,
+    allEntities: window.allEntities
   },
   getters: {
     // returning a function instead of value to circumvent vuex' caching. maybe shouldnt use vue for this. switch to real game engine instead vue?
@@ -14,7 +14,6 @@ export default new Vuex.Store({
   },
   mutations: {
     UPDATE_ENTITY(state, payload) {
-      console.log("got", payload)
       if (payload.destroyed) {
         delete state.allEntities[payload.id]
         return
@@ -24,10 +23,6 @@ export default new Vuex.Store({
         entity = state.allEntities[payload.id] = Object.create(EntityProto);
       }
       Object.assign(entity, payload)
-    },
-    SET_CONTROLLING_ENTITY(state, payload) {
-      state.controlledEntityId = payload
-      window.hodler = state.allEntities[payload]
     }
   },
   actions: {
@@ -36,10 +31,6 @@ export default new Vuex.Store({
         target_id: target.id,
         attacker_id: state.controlledEntityId
       })
-    },
-    spawn({state}, target) {
-      App.events.perform('spawn', {hodler_id: 1})
-      // App.events.perform('retrieve_all_entities')
     }
   }
   

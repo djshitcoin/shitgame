@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Create one channel for events only for me.
 App.events = App.cable.subscriptions.create({channel: "EventsChannel", subject: 'me'}, {
   connected: function() {
+    this.perform('retrieve_entity', {id: window.played_entity_id})
     this.perform('retrieve_all_entities')
   },
   received: function(data) {

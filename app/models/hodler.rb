@@ -1,8 +1,8 @@
 require Rails.root.join 'lib/entity_proto.js.rb'
 
 class Hodler < ApplicationRecord
-  def entity!
-    Entity.where(blueprint: self).first_or_create!({
+  def create_playable_entity!
+    Entity.where(hodler: self).first_or_create!({
       name: name,
       last_hp: last_hp,
       last_hp_updated_at: last_hp_updated_at,
@@ -10,6 +10,11 @@ class Hodler < ApplicationRecord
       controlled_by_id: owner_id,
       stats: stats
     })
+  end
+
+  def destroy!
+    # I can't be destroyed!
+    save!
   end
 
   def stats

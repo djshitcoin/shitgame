@@ -1,24 +1,27 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Development setup
 
-Things you may want to cover:
+```sh
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+sudo apt-get update
+sudo apt-get install -y build-essential libssl-dev libreadline-dev zlib1g-dev libsqlite3-dev yarn
 
-* Ruby version
+curl -fsSL https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-installer | bash
+echo 'export PATH=$PATH:/home/buhrmi/.rbenv/bin' >> ~/.bashrc
+echo 'eval "$(rbenv init -)"'  >> ~/.bashrc
 
-* System dependencies
+rbenv install 2.5.1
+rbenv global 2.5.1
 
-* Configuration
+gem install bundler
 
-* Database creation
+bundle install
+yarn install
 
-* Database initialization
+rbenv rehash
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+rails db:migrate
+rails s
+```

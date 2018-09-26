@@ -15,7 +15,7 @@ class EventsChannel < ApplicationCable::Channel
   
   def attack params
     attacker = Entity.find(params['attacker_id'])
-    return unless attacker.controlled_by_id == current_user.id
+    return unless attacker.hodler.owner_id == current_user.id
     
     target = Entity.find(params['target_id'])
     return if attacker.friendly?(target)
@@ -23,15 +23,13 @@ class EventsChannel < ApplicationCable::Channel
     attacker.attack!(target)
   end
 
-  def spawn params
-    hodler = current_user.hodlers.find(params["hodler_id"])
-    entity = hodler.entity!
-    self.class.broadcast_to current_user, [:SET_CONTROLLING_ENTITY, entity.id]
-    # self.class.broadcast_to current_user, [:UPDATE_ENTITY, entity.as_json]
+  def retrieve_entity params
+    entity = Entity.find(params['id'])
+    self.class.broadcast_to current_user, [:UPDATE_ENTITY, entity.as_json]
   end
 
   def retrieve_all_entities
-    for entity in Entity.all
+    for entity in Entity.where(hodler_id: nil)
       self.class.broadcast_to current_user, [:UPDATE_ENTITY, entity.as_json]
     end
   end

@@ -3,7 +3,7 @@ require Rails.root.join 'lib/entity_proto.js.rb'
 class Entity < ApplicationRecord
   include EntityProto
 
-  belongs_to :blueprint, polymorphic: true, optional: true
+  belongs_to :hodler, optional: true
 
   before_create do
     self.last_hp = self.max_hp
